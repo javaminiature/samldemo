@@ -2,12 +2,13 @@ package com.javaminiature.samldemo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
-/**
- * Hello world!
- *
- */
+import com.javaminiature.samldemo.configuration.IDPConfiguration;
+
+
 @SpringBootApplication
+@EnableConfigurationProperties(IDPConfiguration.class)
 public class App 
 {
     public static void main( String[] args )
@@ -15,3 +16,4 @@ public class App
     	SpringApplication.run(App.class, args);
     }
 }
+
