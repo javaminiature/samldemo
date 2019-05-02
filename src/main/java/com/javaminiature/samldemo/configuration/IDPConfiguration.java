@@ -1,7 +1,9 @@
 package com.javaminiature.samldemo.configuration;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 
 
 @ConfigurationProperties(prefix = "idp")
@@ -18,13 +20,13 @@ public class IDPConfiguration {
 	}
 
 	public static class Metadata {
-		private String url;
+		private List<String> url=new ArrayList<String>();
 
-		public String getUrl() {
+		public List<String> getUrl() {
 			return url;
 		}
 
-		public void setUrl(String url) {
+		public void setUrl(List<String> url) {
 			this.url = url;
 		}
 		

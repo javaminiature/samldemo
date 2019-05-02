@@ -178,7 +178,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter imple
         MetadataDisplayFilter metadataDisplayFilter = new MetadataDisplayFilter();
         metadataDisplayFilter.setContextProvider(contextProvider());
         metadataDisplayFilter.setKeyManager(getJKSKeyManager());
-        metadataDisplayFilter.setManager(metadata());
+        //metadataDisplayFilter.setManager(metadata());
         return metadataDisplayFilter;
     }
     
@@ -207,16 +207,18 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter imple
 	}
 
 	@Bean
-	@Qualifier("metadata")
 	public CachingMetadataManager metadata() throws MetadataProviderException {
+		List<String> idpSSOMetadataURLs=idpconfiguration.getMetadata().getUrl();
 		List<MetadataProvider> providers = new ArrayList<MetadataProvider>();
-		providers.add(ssoExtendedMetadataProvider());
+		for(String idpSSOMetadataURL:idpSSOMetadataURLs) {
+			System.out.println("Calling IDP :"+idpSSOMetadataURL);
+			providers.add(ssoExtendedMetadataProvider(idpSSOMetadataURL));
+		}
 		return new CachingMetadataManager(providers);
 	}
 
-	@Bean
-	public ExtendedMetadataDelegate ssoExtendedMetadataProvider() throws MetadataProviderException {
-		String idpSSOMetadataURL=idpconfiguration.getMetadata().getUrl();
+
+	public ExtendedMetadataDelegate ssoExtendedMetadataProvider(String idpSSOMetadataURL) throws MetadataProviderException {		
 		HTTPMetadataProvider httpMetadataProvider = new HTTPMetadataProvider(this.backgroundTaskTimer, httpClient(),
 				idpSSOMetadataURL);
 		httpMetadataProvider.setParserPool(parserPool());
