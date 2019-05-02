@@ -29,6 +29,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.saml.SAMLAuthenticationProvider;
 import org.springframework.security.saml.SAMLBootstrap;
+import org.springframework.security.saml.SAMLDiscovery;
 import org.springframework.security.saml.SAMLEntryPoint;
 import org.springframework.security.saml.SAMLLogoutFilter;
 import org.springframework.security.saml.SAMLLogoutProcessingFilter;
@@ -150,7 +151,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter imple
 	@Bean
 	public ExtendedMetadata getExtendedMetadata() {
 		ExtendedMetadata extendedMetadata = new ExtendedMetadata();
-		// extendedMetadata.setIdpDiscoveryEnabled(true);
+		extendedMetadata.setIdpDiscoveryEnabled(true);
 		extendedMetadata.setSignMetadata(false);
 		extendedMetadata.setEcpEnabled(true);
 		return extendedMetadata;
@@ -166,7 +167,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter imple
         chains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/saml/logout/**"),
                 samlLogoutFilter()));
         chains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/saml/SingleLogout/**"),
-                samlLogoutProcessingFilter()));        
+                samlLogoutProcessingFilter())); 
+        chains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/saml/discovery/**"),
+                samlIDPDiscovery()));
 		return new FilterChainProxy(chains);
 	}
 
@@ -414,5 +417,14 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter imple
     @Bean
     public SingleLogoutProfile logoutprofile() {
         return new SingleLogoutProfileImpl();
+    }
+    
+    // IDP Discovery Service
+
+    @Bean
+    public SAMLDiscovery samlIDPDiscovery() {
+        SAMLDiscovery idpDiscovery = new SAMLDiscovery();
+        idpDiscovery.setIdpSelectionPath("/saml/discovery");
+        return idpDiscovery;
     }
 }

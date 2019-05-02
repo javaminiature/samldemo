@@ -1,0 +1,36 @@
+<!doctype html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+  layout:decorate="~{layout}"
+>
+
+<body>
+    <!-- Content starts -->
+    <section layout:fragment="content">
+      
+      <h2>Select your Identity Provider:</h2>
+
+      <form th:action="${idpDiscoReturnURL}" method="get">
+        <fieldset>
+          <div th:each="idp : ${idps}">
+            <label>
+              <input type="radio" th:name="${idpDiscoReturnParam}" th:id="'idp_' + ${idp}" th:value="${idp}" />
+              <span  th:text="${idp}">null</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <small id="sso-btn">
+          <button type="submit">
+            <i></i> Start 3rd Party Login
+          </button>
+        </small>
+      </form>
+    </section>
+    <!-- Content ends -->
+</body>
+
+</html>
