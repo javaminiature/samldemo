@@ -18,7 +18,6 @@ import org.opensaml.xml.parse.StaticBasicParserPool;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.DefaultResourceLoader;
@@ -130,7 +129,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter imple
 	@Bean
 	public MetadataGenerator getMetadataGenerator() {
 		MetadataGenerator metadataGenerator = new MetadataGenerator();
-		metadataGenerator.setEntityId("com:javaminiature:sp");
+		metadataGenerator.setEntityId(idpconfiguration.getEntityid());
 		metadataGenerator.setExtendedMetadata(getExtendedMetadata());
 		metadataGenerator.setIncludeDiscoveryExtension(false);
 		metadataGenerator.setKeyManager(getJKSKeyManager());

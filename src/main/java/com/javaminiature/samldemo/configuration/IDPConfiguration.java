@@ -10,7 +10,17 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class IDPConfiguration {
 	
 	private Metadata metadata=new Metadata();
+	private String entityid;
 	
+	
+	public String getEntityid() {
+		return entityid;
+	}
+
+	public void setEntityid(String entityid) {
+		this.entityid = entityid;
+	}
+
 	public Metadata getMetadata() {
 		return metadata;
 	}
